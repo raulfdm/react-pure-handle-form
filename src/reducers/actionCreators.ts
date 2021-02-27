@@ -1,4 +1,4 @@
-import { Actions, Fields } from "./reducers";
+import { Actions, Fields } from "./types";
 
 export function createActions(dispatch: React.Dispatch<Actions>) {
   return {

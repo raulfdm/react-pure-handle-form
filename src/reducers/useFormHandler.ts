@@ -1,7 +1,6 @@
 import { useReducer } from "react";
 import { createActions } from "./actionCreators";
-
-import { reducer, initialState } from "./reducers";
+import { initialState, reducer } from "./reducers";
 
 export function useFormHandler() {
   const [state, dispatch] = useReducer(reducer, initialState);
