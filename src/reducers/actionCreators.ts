@@ -8,5 +8,11 @@ export function createActions(dispatch: React.Dispatch<Actions>) {
         payload: { fieldName },
       });
     },
+    changeValue(fieldName: Fields, value: string): void {
+      dispatch({
+        type: "ON_FIELD_CHANGE",
+        payload: { fieldName, value },
+      });
+    },
   };
 }

@@ -8,5 +8,5 @@ export function useFormHandler() {
 
   const actions = createActions(dispatch);
 
-  return [state, actions];
+  return { state, actions };
 }

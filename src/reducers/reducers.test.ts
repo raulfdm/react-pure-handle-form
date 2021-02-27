@@ -7,12 +7,15 @@ describe("Reducer", () => {
         Object {
           "card": Object {
             "pristine": true,
+            "value": "",
           },
           "date": Object {
             "pristine": true,
+            "value": "",
           },
           "name": Object {
             "pristine": true,
+            "value": "",
           },
         }
       `);
@@ -60,15 +63,51 @@ describe("Reducer", () => {
         Object {
           "card": Object {
             "pristine": false,
+            "value": "",
           },
           "date": Object {
             "pristine": false,
+            "value": "",
           },
           "name": Object {
             "pristine": false,
+            "value": "",
           },
         }
       `);
     });
+  });
+  it("changes field value", () => {
+    expect(initialState).toMatchInlineSnapshot(`
+    Object {
+      "card": Object {
+        "pristine": true,
+        "value": "",
+      },
+      "date": Object {
+        "pristine": true,
+        "value": "",
+      },
+      "name": Object {
+        "pristine": true,
+        "value": "",
+      },
+    }
+  `);
+
+    let nextState = reducer(initialState, {
+      type: "ON_FIELD_CHANGE",
+      payload: {
+        fieldName: "card",
+        value: "0000 0000 0000 0000",
+      },
+    });
+
+    expect(nextState.card).toEqual(
+      expect.objectContaining({
+        pristine: false,
+        value: "0000 0000 0000 0000",
+      })
+    );
   });
 });

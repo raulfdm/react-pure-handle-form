@@ -5,12 +5,15 @@ const FIELD_DATE = "date";
 export const initialState = Object.freeze({
   [FIELD_CARD]: Object.freeze({
     pristine: true,
+    value: "",
   }),
   [FIELD_NAME]: Object.freeze({
     pristine: true,
+    value: "",
   }),
   [FIELD_DATE]: Object.freeze({
     pristine: true,
+    value: "",
   }),
 });
 
@@ -28,6 +31,19 @@ export function reducer(state: State, action: Actions): State {
       };
     }
 
+    case "ON_FIELD_CHANGE": {
+      const { fieldName, value } = action.payload;
+
+      return {
+        ...state,
+        [fieldName]: {
+          ...state[fieldName],
+          pristine: false,
+          value,
+        },
+      };
+    }
+
     default:
       return state;
   }
@@ -35,13 +51,21 @@ export function reducer(state: State, action: Actions): State {
 
 export type Fields = typeof FIELD_CARD | typeof FIELD_NAME | typeof FIELD_DATE;
 
-export type TouchField = {
+type TouchField = {
   type: "TOUCH_FIELD";
   payload: {
     fieldName: Fields;
   };
 };
 
-export type Actions = TouchField;
+type OnFieldChange = {
+  type: "ON_FIELD_CHANGE";
+  payload: {
+    fieldName: Fields;
+    value: string;
+  };
+};
+
+export type Actions = TouchField | OnFieldChange;
 
 export type State = typeof initialState;
