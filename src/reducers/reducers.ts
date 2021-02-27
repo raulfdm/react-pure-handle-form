@@ -1,19 +1,25 @@
-const FIELD_CARD = "card";
-const FIELD_NAME = "name";
-const FIELD_DATE = "date";
+export const FIELD_CARD = "card";
+export const FIELD_NAME = "name";
+export const FIELD_DATE = "date";
 
 export const initialState = Object.freeze({
   [FIELD_CARD]: Object.freeze({
     pristine: true,
     value: "",
+    errorMessage: "",
+    hasError: false,
   }),
   [FIELD_NAME]: Object.freeze({
     pristine: true,
     value: "",
+    errorMessage: "",
+    hasError: false,
   }),
   [FIELD_DATE]: Object.freeze({
     pristine: true,
     value: "",
+    errorMessage: "",
+    hasError: false,
   }),
 });
 
@@ -44,6 +50,20 @@ export function reducer(state: State, action: Actions): State {
       };
     }
 
+    case "FIELD_HAS_ERROR": {
+      const { fieldName, errorMessage } = action.payload;
+
+      return {
+        ...state,
+        [fieldName]: {
+          ...state[fieldName],
+          pristine: false,
+          hasError: true,
+          errorMessage,
+        },
+      };
+    }
+
     default:
       return state;
   }
@@ -66,6 +86,14 @@ type OnFieldChange = {
   };
 };
 
-export type Actions = TouchField | OnFieldChange;
+type FieldHasError = {
+  type: "FIELD_HAS_ERROR";
+  payload: {
+    fieldName: Fields;
+    errorMessage: string;
+  };
+};
+
+export type Actions = TouchField | OnFieldChange | FieldHasError;
 
 export type State = typeof initialState;

@@ -1,6 +1,25 @@
 import { FormEvent } from "react";
-import { Fields } from "./reducers/reducers";
+import {
+  Fields,
+  FIELD_CARD,
+  FIELD_DATE,
+  FIELD_NAME,
+} from "./reducers/reducers";
 import { useFormHandler } from "./reducers/useFormHandler";
+
+const fieldValidationMap = {
+  [FIELD_CARD]: (value: string): string | undefined => {
+    if (value.length < 3) {
+      return "Card Must have at least length of 3";
+    }
+  },
+  [FIELD_NAME]: (value: string): string | undefined => {
+    return;
+  },
+  [FIELD_DATE]: (value: string): string | undefined => {
+    return;
+  },
+};
 
 function App() {
   const { state, actions } = useFormHandler();
@@ -25,8 +44,13 @@ function App() {
               const { name } = e.target as HTMLInputElement;
               actions.touchField(name as Fields);
             }}
-            onBlur={(e) => {
-              console.log("BLUR", e);
+            onBlur={(e: FormEvent<HTMLFieldSetElement>) => {
+              const { name, value } = e.target as HTMLInputElement;
+              const error = fieldValidationMap[name as Fields](value);
+
+              console.log({ error, name, value });
+
+              actions.validateField(name as Fields, error);
             }}
           >
             <input type="text" name="card" placeholder="0000 0000 0000 0000" />
