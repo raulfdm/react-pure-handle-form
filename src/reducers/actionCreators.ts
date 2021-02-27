@@ -15,12 +15,10 @@ export function createActions(dispatch: React.Dispatch<Actions>) {
       });
     },
     validateField(fieldName: Fields, errorMessage?: string): void {
-      if (typeof errorMessage !== "undefined") {
-        dispatch({
-          type: "FIELD_HAS_ERROR",
-          payload: { fieldName, errorMessage },
-        });
-      }
+      dispatch({
+        type: "ON_FIELD_ERROR",
+        payload: { fieldName, errorMessage },
+      });
     },
   };
 }

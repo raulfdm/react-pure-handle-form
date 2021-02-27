@@ -50,8 +50,20 @@ export function reducer(state: State, action: Actions): State {
       };
     }
 
-    case "FIELD_HAS_ERROR": {
+    case "ON_FIELD_ERROR": {
       const { fieldName, errorMessage } = action.payload;
+
+      if (typeof errorMessage === "undefined") {
+        return {
+          ...state,
+          [fieldName]: {
+            ...state[fieldName],
+            pristine: false,
+            hasError: false,
+            errorMessage: "",
+          },
+        };
+      }
 
       return {
         ...state,
@@ -87,10 +99,10 @@ type OnFieldChange = {
 };
 
 type FieldHasError = {
-  type: "FIELD_HAS_ERROR";
+  type: "ON_FIELD_ERROR";
   payload: {
     fieldName: Fields;
-    errorMessage: string;
+    errorMessage: string | undefined;
   };
 };
 

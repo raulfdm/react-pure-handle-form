@@ -1,30 +1,11 @@
 import { reducer, initialState } from "./reducers";
 
 describe("Reducer", () => {
-  it("sets pristine to false if the value is touched", () => {
-    expect(initialState).toMatchInlineSnapshot(`
-      Object {
-        "card": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-        "date": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-        "name": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-      }
-    `);
+  afterEach(() => {
+    expect(initialState).toBe(initialState);
+  });
 
+  it("sets pristine to false if the value is touched", () => {
     let nextState = reducer(initialState, {
       type: "TOUCH_FIELD",
       payload: {
@@ -89,29 +70,6 @@ describe("Reducer", () => {
   });
 
   it("changes field value", () => {
-    expect(initialState).toMatchInlineSnapshot(`
-      Object {
-        "card": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-        "date": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-        "name": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-      }
-    `);
-
     let nextState = reducer(initialState, {
       type: "ON_FIELD_CHANGE",
       payload: {
@@ -129,32 +87,9 @@ describe("Reducer", () => {
   });
 
   it("sets error for a field", () => {
-    expect(initialState).toMatchInlineSnapshot(`
-      Object {
-        "card": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-        "date": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-        "name": Object {
-          "errorMessage": "",
-          "hasError": false,
-          "pristine": true,
-          "value": "",
-        },
-      }
-    `);
-
     const errorMessage = "This field has an incorrect value";
     let nextState = reducer(initialState, {
-      type: "FIELD_HAS_ERROR",
+      type: "ON_FIELD_ERROR",
       payload: {
         fieldName: "card",
         errorMessage,
@@ -165,6 +100,25 @@ describe("Reducer", () => {
       expect.objectContaining({
         pristine: false,
         errorMessage,
+        hasError: true,
+      })
+    );
+  });
+
+  it("cleans error when message is undefined", () => {
+    let nextState = reducer(initialState, {
+      type: "ON_FIELD_ERROR",
+      payload: {
+        fieldName: "card",
+        errorMessage: undefined,
+      },
+    });
+
+    expect(nextState.card).toEqual(
+      expect.objectContaining({
+        pristine: false,
+        errorMessage: "",
+        hasError: false,
       })
     );
   });
