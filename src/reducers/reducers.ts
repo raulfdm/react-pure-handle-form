@@ -1,61 +1,47 @@
+const FIELD_CARD = "card";
+const FIELD_NAME = "name";
+const FIELD_DATE = "date";
+
 export const initialState = Object.freeze({
-  card: Object.freeze({
+  [FIELD_CARD]: Object.freeze({
     pristine: true,
   }),
-  date: Object.freeze({
+  [FIELD_NAME]: Object.freeze({
     pristine: true,
   }),
-  name: Object.freeze({
+  [FIELD_DATE]: Object.freeze({
     pristine: true,
   }),
 });
 
 export function reducer(state: State, action: Actions): State {
   switch (action.type) {
-    case "TOUCH_CARD":
-      return {
-        ...state,
-        card: {
-          ...state.card,
-          pristine: false,
-        },
-      };
+    case "TOUCH_FIELD": {
+      const { fieldName } = action.payload;
 
-    case "TOUCH_DATE":
       return {
         ...state,
-        date: {
-          ...state.date,
+        [fieldName]: {
+          ...state[fieldName],
           pristine: false,
         },
       };
-
-    case "TOUCH_NAME":
-      return {
-        ...state,
-        name: {
-          ...state.name,
-          pristine: false,
-        },
-      };
+    }
 
     default:
       return state;
   }
 }
 
-export type TouchCardAction = {
-  type: "TOUCH_CARD";
+export type Fields = typeof FIELD_CARD | typeof FIELD_NAME | typeof FIELD_DATE;
+
+export type TouchField = {
+  type: "TOUCH_FIELD";
+  payload: {
+    fieldName: Fields;
+  };
 };
 
-export type TouchDateAction = {
-  type: "TOUCH_DATE";
-};
-
-export type TouchNameAction = {
-  type: "TOUCH_NAME";
-};
-
-export type Actions = TouchCardAction | TouchDateAction | TouchNameAction;
+export type Actions = TouchField;
 
 export type State = typeof initialState;

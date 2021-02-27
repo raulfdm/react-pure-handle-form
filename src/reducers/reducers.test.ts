@@ -1,66 +1,74 @@
-import { reducer, initialState, Actions } from "./reducers";
+import { reducer, initialState } from "./reducers";
 
 describe("Reducer", () => {
-  describe("Card Actions", () => {
+  describe("touch field", () => {
     it("sets pristine to false if the value is touched", () => {
-      const action: Actions = {
-        type: "TOUCH_CARD",
-      };
+      expect(initialState).toMatchInlineSnapshot(`
+        Object {
+          "card": Object {
+            "pristine": true,
+          },
+          "date": Object {
+            "pristine": true,
+          },
+          "name": Object {
+            "pristine": true,
+          },
+        }
+      `);
 
-      expect(initialState.card).toEqual(
-        expect.objectContaining({
-          pristine: true,
-        })
-      );
-      const nextState = reducer(initialState, action);
+      let nextState = reducer(initialState, {
+        type: "TOUCH_FIELD",
+        payload: {
+          fieldName: "card",
+        },
+      });
 
       expect(nextState.card).toEqual(
         expect.objectContaining({
           pristine: false,
         })
       );
-    });
-  });
 
-  describe("Date Actions", () => {
-    it("sets pristine to false if the value is touched", () => {
-      const action: Actions = {
-        type: "TOUCH_DATE",
-      };
-
-      expect(initialState.date).toEqual(
-        expect.objectContaining({
-          pristine: true,
-        })
-      );
-      const nextState = reducer(initialState, action);
+      nextState = reducer(nextState, {
+        type: "TOUCH_FIELD",
+        payload: {
+          fieldName: "date",
+        },
+      });
 
       expect(nextState.date).toEqual(
         expect.objectContaining({
           pristine: false,
         })
       );
-    });
-  });
 
-  describe("Name Actions", () => {
-    it("sets pristine to false if the value is touched", () => {
-      const action: Actions = {
-        type: "TOUCH_NAME",
-      };
-
-      expect(initialState.name).toEqual(
-        expect.objectContaining({
-          pristine: true,
-        })
-      );
-      const nextState = reducer(initialState, action);
+      nextState = reducer(nextState, {
+        type: "TOUCH_FIELD",
+        payload: {
+          fieldName: "name",
+        },
+      });
 
       expect(nextState.name).toEqual(
         expect.objectContaining({
           pristine: false,
         })
       );
+
+      expect(nextState).toMatchInlineSnapshot(`
+        Object {
+          "card": Object {
+            "pristine": false,
+          },
+          "date": Object {
+            "pristine": false,
+          },
+          "name": Object {
+            "pristine": false,
+          },
+        }
+      `);
     });
   });
 });
